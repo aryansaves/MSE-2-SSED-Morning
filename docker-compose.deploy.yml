@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-taskflow}
       POSTGRES_USER: ${POSTGRES_USER:-taskflow_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-deployment_change_me}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -32,14 +32,14 @@ services:
       start_period: 10s
 
   backend:
-    image: ${DOCKERHUB_USERNAME}/taskflow-backend:latest
+    image: ${DOCKERHUB_USERNAME:-aryanhub}/taskflow-backend:latest
     container_name: taskflow-backend
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-taskflow}
       POSTGRES_USER: ${POSTGRES_USER:-taskflow_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-taskflow_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-taskflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-deployment_change_me}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-taskflow_user}:${POSTGRES_PASSWORD:-deployment_change_me}@postgres:5432/${POSTGRES_DB:-taskflow}
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET:-replace_with_a_long_random_secret}
       PORT: 3000
@@ -60,7 +60,7 @@ services:
       start_period: 30s
 
   frontend:
-    image: ${DOCKERHUB_USERNAME}/taskflow-frontend:latest
+    image: ${DOCKERHUB_USERNAME:-aryanhub}/taskflow-frontend:latest
     container_name: taskflow-frontend
     restart: unless-stopped
     ports:
